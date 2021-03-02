@@ -50,6 +50,13 @@ class Bookstack(commands.Cog):
         await ctx.send(None, embed=em)
     
      
+    @commands.command(name="shit")
+    async def shit(self, ctx: commands.Context):
+        """This posts an example embed"""
+        # guild = self.bot.get_guild(payload.guild_id)
+        # user = guild.get_member(payload.user_id)
+
+       await ctx.send("This works...")
      
      
      
