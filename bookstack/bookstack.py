@@ -75,7 +75,7 @@ class Bookstack(commands.Cog):
     @commands.command(name="cb")
     async def cb(self, ctx: commands.Context):
         """Prüft auf aktualisierte Objekte in der Bibliothek"""
-        #await ctx.send("Prüfe manuell auf Neues in der Bibliothek...")
+        await ctx.send("Prüfe manuell auf Neues in der Bibliothek...")
 
         # Input the appropriate values for these three variables
         book_url = 'https://konvent.fitzzz.de/api/books'
