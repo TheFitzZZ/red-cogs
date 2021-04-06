@@ -17,7 +17,7 @@ class Test(commands.Cog):
 
         
 
-    @commands.command(name="testembed")
+    @commands.command(name="testem")
     async def testembed(self, ctx: commands.Context):
         """This posts an example embed"""
         # guild = self.bot.get_guild(payload.guild_id)
@@ -27,9 +27,9 @@ class Test(commands.Cog):
         url = ctx.message.author.avatar_url
         url = "https://konvent.fitzzz.de/uploads/images/cover_book/2021-01/thumbs-440-250/necro-b1.png"
         url_link = "https://konvent.fitzzz.de/uploads/images/gallery/2021-03/scaled-1680-/link.png"
-        url_konventlogo = "https://konvent.fitzzz.de/uploads/images/gallery/2021-03/wappen-transparent.png"
+        url_calendarlogo = "https://cdn4.iconfinder.com/data/icons/small-n-flat/24/calendar-512.png"
 
-        em = discord.Embed(title="Nekromantie I", url="https://konvent.fitzzz.de/books/anatomie-i")
+        em = discord.Embed(title="Aktueller Terminplan des Konvents", url="https://konvent.fitzzz.de/books/anatomie-i")
         em.set_author(name=f"Ein Buch wurde aktualisiert!")
         #em.set_author(name=f"is hosting", icon_url=url)
 
@@ -37,20 +37,22 @@ class Test(commands.Cog):
         #     f"Name des Buchs: "
         # )
 
-        em.add_field(name="Bearbeiter/in", value="Lucretia Mandelblatt")
-        em.set_image(url=url)
-        em.set_footer(text=f"Zum öffnen des Buches des Buches den Titel anklicken!", icon_url=url_link)
+        em.add_field(name="Jagdausflug", value="19.02. 21 Uhr ", inline=True)
+        em.add_field(name="Unterricht Konvent", value="23.04. 20 Uhr", inline=False)
+        em.add_field(name="Unterricht Akademie", value="26.05. 20 Uhr")
+        #em.set_image(url=url)
+        em.set_footer(text=f"Test!", icon_url=url_link)
         #em.set_footer(text=f"Approved by {user}")
 
         # thumbnails = await self.config.guild(ctx.guild).custom_links()
         # for name, link in thumbnails.items():
         #     if name.lower() in event.event.lower():
-        em.set_thumbnail(url=url_konventlogo)
+        em.set_thumbnail(url=url_calendarlogo)
 
         await ctx.send(None, embed=em)
     
      
-    @commands.command(name="shit")
+    @commands.command(name="shit2")
     async def shit(self, ctx: commands.Context):
         """This posts an example embed"""
         # guild = self.bot.get_guild(payload.guild_id)
@@ -79,7 +81,7 @@ class Test(commands.Cog):
     
     
     
-    @commands.command(name="cb")
+    @commands.command(name="cb2")
     async def cb(self, ctx: commands.Context):
         """Prüft auf aktualisierte Objekte in der Bibliothek"""
         # await ctx.send("Prüfe manuell auf Neues in der Bibliothek...")
@@ -254,7 +256,7 @@ class Test(commands.Cog):
         def build_embed(name, thumburl, slug, type, editor):
             url_thumb = "https://konvent.fitzzz.de" + thumburl
             #url_link = "https://konvent.fitzzz.de/uploads/images/gallery/2021-03/scaled-1680-/link.png"
-            url_konventlogo = "https://konvent.fitzzz.de/uploads/images/gallery/2021-03/wappen-transparent.png"
+            url_calendarlogo = "https://konvent.fitzzz.de/uploads/images/gallery/2021-03/wappen-transparent.png"
             url_item = "https://konvent.fitzzz.de/" # "https://konvent.fitzzz.de/" + type + "/" + slug
 
             if(type == "books"):
@@ -271,7 +273,7 @@ class Test(commands.Cog):
             em.add_field(name="Bearbeiter/in", value=editor)
             em.set_image(url=url_thumb)
             #em.set_footer(text=f"Zum öffnen des Buches des Buches den Titel anklicken!", icon_url=url_link)
-            em.set_thumbnail(url=url_konventlogo)
+            em.set_thumbnail(url=url_calendarlogo)
 
             return em
 
