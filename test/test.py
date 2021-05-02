@@ -1,3 +1,4 @@
+from redbot.core import Config
 from redbot.core import commands
 import requests
 import json
@@ -6,14 +7,80 @@ import discord
 from datetime import datetime, timedelta
 
 class Test(commands.Cog):
-    """Bookstackintergration"""
+    def __init__(self):
+        self.config = Config.get_conf(self, identifier=3858673456)
+        default_global = {
+            "foobar": True,
+            "dates": {
+                "Test 1": "1.1. 01:00 Uhr",
+                "Test 2": "2.2. 02:00 Uhr"
+            }
+        }
+        default_guild = {
+            "blah": [],
+            # "baz": 1234567890
+            "dates": {
+                "Test 1": "1.1. 01:00 Uhr",
+                "Test 2": "2.2. 02:00 Uhr"
+            }
+        }
+        self.config.register_global(**default_global)
+        self.config.register_guild(**default_guild)
 
   
     @commands.command()
     async def test(self, ctx):
         """This does stuff!"""
         # Your code will go here
-        await ctx.send("Prüfe Bookstack...")
+        await ctx.send("Lese Default Dict...")
+        dates = await self.config.guild(ctx.guild).dates()
+        await ctx.send("The value of dates is {}".format("True" if dates else "False"))
+
+        for key in dates:
+            await ctx.send("Key is "+ key)
+
+
+        await ctx.send("Lösche ein Dict...")
+        del dates["Test 1"]
+
+        for key in dates:
+            await ctx.send("Key is "+ key)
+
+        await ctx.send("Adde ein Dict...")
+
+        dates["Test 3"] = "rofl"
+        for key in dates:
+            await ctx.send("Key is "+ key)
+
+
+    @commands.command()
+    async def adddate(self, ctx: commands.Context, *Termindaten: str):
+        """This does stuff!"""
+        # Your code will go here
+        # await ctx.send("Lese Default Dict..."+ ctx.Content)
+
+        if not Termindaten:
+            return await ctx.send_help()
+
+        await ctx.send("Termin is "+ Termindaten[0] + " am " + Termindaten[1])
+
+    @commands.command()
+    async def adddate2(self, ctx: commands.Context, ids: str):
+        """This does stuff!"""
+        # Your code will go here
+        # await ctx.send("Lese Default Dict..."+ ctx.Content)
+
+        if not ids:
+            return await ctx.send_help()
+
+        for idx in ids:
+            await ctx.send("Key is "+ idx)
+
+
+
+
+
+
 
         
 
