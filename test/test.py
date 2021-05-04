@@ -54,7 +54,7 @@ class Test(commands.Cog):
 
 
     @commands.command()
-    async def neuesevent(self, ctx: commands.Context, *ids: str):
+    async def tneuesevent(self, ctx: commands.Context, *ids: str):
         """Fügt ein neues Ereignis zum Kalender hinzu."""
 
         if not ids:
@@ -77,7 +77,7 @@ class Test(commands.Cog):
 
 
     @commands.command()
-    async def loescheevent(self, ctx: commands.Context, *id: str):
+    async def tloescheevent(self, ctx: commands.Context, *id: str):
         """Löscht ein bestehendes Ereignis aus dem Kalender."""
 
         if not id:
@@ -98,7 +98,7 @@ class Test(commands.Cog):
 
 
     @commands.command()
-    async def kalender(self, ctx: commands.Context):
+    async def tkalender(self, ctx: commands.Context):
         """This posts an example embed"""
         # guild = self.bot.get_guild(payload.guild_id)
         # user = guild.get_member(payload.user_id)
