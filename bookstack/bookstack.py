@@ -102,7 +102,10 @@ class Bookstack(commands.Cog):
                 slug = json['slug']
                 
                 if(type == "book" or type == "shelve"):
-                    coverpath = json['cover']['path']
+                    try:
+                        coverpath = json['cover']['path']
+                    except:
+                        coverpath = "/uploads/images/gallery/2021-03/scaled-1680-/book.png"
                 else:
                     coverpath = "/uploads/images/gallery/2021-03/scaled-1680-/book.png"
 

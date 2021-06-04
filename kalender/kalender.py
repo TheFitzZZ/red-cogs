@@ -6,9 +6,10 @@ import datetime
 import discord
 from datetime import datetime, timedelta
 
-class Calendar(commands.Cog):
-    def __init__(self):
+class Kalender(commands.Cog):
+    def __init__(self, bot: discord.Client):
         self.config = Config.get_conf(self, identifier=38586798456)
+        self.bot = bot
         default_global = {
             "foobar": True,
             "dates": {
@@ -28,11 +29,34 @@ class Calendar(commands.Cog):
         """This does stuff!"""
         # Your code will go here
         # await ctx.send("Lese Default Dict...")
-        dates = await self.config.guild(ctx.guild).dates()
         # await ctx.send("The value of dates is {}".format("True" if dates else "False"))
+        
 
-        for key in dates:
-            await ctx.send("Key is "+ key)
+        await ctx.send("Löse Update aus...")
+        await self.kalender(ctx, True)
+
+
+        #################
+
+        # await ctx.send("Löse Update aus...")
+        # channel = await ctx.bot.get_shared_api_tokens("calchannelid")
+        # msgid = await self.config.guild(ctx.guild).calendarmsgid()
+        # await ctx.send(channel['calchannelid'])
+
+        # channeldata = self.bot.get_channel(int(channel['calchannelid']))
+        # msg = await channeldata.fetch_message(msgid)
+
+        # em = discord.Embed(title="Aktueller Terminplan des Konvents", url="https://konvent.fitzzz.de/books/anatomie-i")
+        # em.set_author(name=f"Ein neuer Kalender wird aufgehängt...")
+        # em.add_field(name="Jagdausflug", value="19.02. 21 Uhr ", inline=True)
+
+        # await msg.edit(content=None, embed=em)
+
+        #################
+        
+        # dates = await self.config.guild(ctx.guild).dates()
+        # for key in dates:
+        #     await ctx.send("Key is "+ key)
 
 
 
@@ -55,6 +79,7 @@ class Calendar(commands.Cog):
                 await ctx.send(f"Das Ereignis {ids[0]} existiert schon.")
         except KeyError:
             await self.config.guild(ctx.guild).dates.set_raw(ids[0], value=ids[1])
+            await self.kalender(ctx, True)
             await ctx.send(f"Das Ereignis {ids[0]} wurde dem Kalender hinzugefügt.")
 
 
@@ -75,52 +100,45 @@ class Calendar(commands.Cog):
             is_already_item = await self.config.guild(ctx.guild).dates.get_raw(id[0])
             if is_already_item:
                 await self.config.guild(ctx.guild).dates.clear_raw(id[0])
+                await self.kalender(ctx, True)
                 await ctx.send(f"Das Ereignis {id[0]} wurde entfernt.")
+
         except KeyError:
             await ctx.send(f"Das Ereignis {id[0]} nicht gefunden.")
 
 
     @commands.command()
-    async def kalender(self, ctx: commands.Context):
-        """This posts an example embed"""
-        # guild = self.bot.get_guild(payload.guild_id)
-        # user = guild.get_member(payload.user_id)
+    async def kalender(self, ctx: commands.Context, update = False):
+        """This posts or updates the calendar"""
 
         user = ctx.message.author.name
         url = ctx.message.author.avatar_url
         url = "https://konvent.fitzzz.de/uploads/images/system/2021-04/wappen-transparent.png"
-        url_link = "https://konvent.fitzzz.de/uploads/images/gallery/2021-03/scaled-1680-/link.png"
+        url_link = "https://cdn.discordapp.com/emojis/595164813982826497.png?v=1"
         url_calendarlogo = "https://cdn4.iconfinder.com/data/icons/small-n-flat/24/calendar-512.png"
 
-        em = discord.Embed(title="Aktueller Terminplan des Konvents", url="https://konvent.fitzzz.de/books/anatomie-i")
-        #em.set_author(name=f"Ein Buch wurde aktualisiert!")
+        em = discord.Embed(title="Aktueller Terminplan des Konvents", url="https://konvent.fitzzz.de/books/der-gildenkalender/page/nutzung-unseres-schreibers-scrib")
         em.set_author(name=f"Ein neuer Kalender wird aufgehängt...", icon_url=url)
-
-        # em.description = (
-        #     f"Name des Buchs: "
-        # )
 
         dates = await self.config.guild(ctx.guild).dates()
 
         for key in dates:
             em.add_field(name=key, value=dates[key], inline=True)
-            # await ctx.send("Key is "+ key)
-            # await ctx.send("Key is "+ dates[key])
-
-
-        # em.add_field(name="Jagdausflug", value="19.02. 21 Uhr ", inline=True)
-        # em.add_field(name="Unterricht Konvent", value="23.04. 20 Uhr", inline=False)
-        # em.add_field(name="Unterricht Akademie", value="26.05. 20 Uhr")
         
-        #em.set_image(url=url)
-        #em.set_footer(text=f"Test!", icon_url=url_link)
-        #em.set_footer(text=f"Approved by {user}")
-
-        # thumbnails = await self.config.guild(ctx.guild).custom_links()
-        # for name, link in thumbnails.items():
-        #     if name.lower() in event.event.lower():
+        em.set_footer(text=f"Für Hilfe zur Nutzung bitte auf die Überschrift klicken.", icon_url=url_link)
         em.set_thumbnail(url=url_calendarlogo)
 
-        await ctx.send(None, embed=em)
-    
+        if update != True:
+            calmsg = await ctx.send(None, embed=em)
+            await self.config.guild(ctx.guild).calendarmsgid.set(calmsg.id)
+        
+        if update == True:
+            channel = await ctx.bot.get_shared_api_tokens("calchannelid")
+            msgid = await self.config.guild(ctx.guild).calendarmsgid()
+            channeldata = self.bot.get_channel(int(channel['calchannelid']))
+            msg = await channeldata.fetch_message(msgid)
+            await msg.edit(content=None, embed=em)
+
+
+  
    
