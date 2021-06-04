@@ -118,7 +118,7 @@ class Kalender(commands.Cog):
         url_calendarlogo = "https://cdn4.iconfinder.com/data/icons/small-n-flat/24/calendar-512.png"
 
         em = discord.Embed(title="Aktueller Terminplan des Konvents", url="https://konvent.fitzzz.de/books/der-gildenkalender/page/nutzung-unseres-schreibers-scrib")
-        em.set_author(name=f"Ein neuer Kalender wird aufgehängt...", icon_url=url)
+        em.set_author(name=f"*Ein Kalender ist in der Eingangshalle aufgehängt*", icon_url=url)
 
         dates = await self.config.guild(ctx.guild).dates()
 
@@ -127,15 +127,17 @@ class Kalender(commands.Cog):
         
         em.set_footer(text=f"Für Hilfe zur Nutzung bitte auf die Überschrift klicken.", icon_url=url_link)
         em.set_thumbnail(url=url_calendarlogo)
+        
+        channel = await ctx.bot.get_shared_api_tokens("calchannelid")
+        channeldata = self.bot.get_channel(int(channel['calchannelid']))
+
 
         if update != True:
-            calmsg = await ctx.send(None, embed=em)
+            calmsg = await channeldata.send(None, embed=em)
             await self.config.guild(ctx.guild).calendarmsgid.set(calmsg.id)
         
         if update == True:
-            channel = await ctx.bot.get_shared_api_tokens("calchannelid")
             msgid = await self.config.guild(ctx.guild).calendarmsgid()
-            channeldata = self.bot.get_channel(int(channel['calchannelid']))
             msg = await channeldata.fetch_message(msgid)
             await msg.edit(content=None, embed=em)
 
