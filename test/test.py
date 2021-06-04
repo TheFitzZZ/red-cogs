@@ -7,8 +7,9 @@ import discord
 from datetime import datetime, timedelta
 
 class Test(commands.Cog):
-    def __init__(self):
+    def __init__(self, bot: discord.Client):
         self.config = Config.get_conf(self, identifier=3858673456)
+        self.bot = bot
         default_global = {
             "foobar": True,
             "dates": {
@@ -22,7 +23,8 @@ class Test(commands.Cog):
             "dates": {
                 # "Test 1": "1.1. 01:00 Uhr",
                 # "Test 2": "2.2. 02:00 Uhr"
-            }
+            },
+            "calendarmsgid": 0
         }
         self.config.register_global(**default_global)
         self.config.register_guild(**default_guild)
@@ -52,6 +54,56 @@ class Test(commands.Cog):
         # for key in dates:
         #     await ctx.send("Key is "+ key)
 
+    #    @post.command(name='작성', usage='작성 [제목]', aliases=['write'], help='글을 작성합니다', brief='usingcommand')
+    #             await msg.edit(embed=Embed(title='글 작성이 취소되었습니다', color=Color.green()))
+    #         await msg.add_reaction('⭕')
+    # post = self.bot.postDB.getByID(id)
+    # 		print(self.db.deletePost(id))
+
+    @commands.command()
+    async def getpostid(self, ctx):
+        """This does stuff!"""
+
+        test = await ctx.send("This is a post...")
+        #await ctx.send(test.id)
+        await self.config.guild(ctx.guild).calendarmsgid.set(test.id)
+
+        #msgid = await self.config.guild(ctx.guild).calendarmsgid()
+        #await ctx.send(msgid)
+
+    @commands.command()
+    async def deletepost(self, ctx, channel: discord.TextChannel = None):
+        """This does stuff!"""
+        # msgid = await self.config.guild(ctx.guild).calendarmsgid()
+        channel = await ctx.bot.get_shared_api_tokens("calchannelid")
+        msgid = await self.config.guild(ctx.guild).calendarmsgid()
+        await ctx.send(channel['calchannelid'])
+
+
+        channell = self.bot.get_channel(int(channel['calchannelid']))
+        # await ctx.send(channell)
+        
+        # chan = commands.get_channel(channel)
+        msg = await channell.fetch_message(msgid)
+        await msg.edit(content="Some content!")
+        
+        
+        await msg.delete()
+
+        #msg = await ctx.guild.deletepost(msgid)  #get_message(channel, message_id)
+        #await msg.deletepost()
+
+
+
+    @commands.command()
+    async def senttochannel(self, ctx):
+        """This does stuff!"""
+
+        # Get the channel we should send this to from the secret storage (workaround for now ... or ever cus it works and I'm lazy)
+        test = await ctx.bot.get_shared_api_tokens("channelid")
+        channelid = test.get("channelid")
+        channelid = int(channelid)
+        chan = ctx.bot.get_channel(channelid)
 
     @commands.command()
     async def tneuesevent(self, ctx: commands.Context, *ids: str):
