@@ -65,12 +65,26 @@ class Kalender(commands.Cog):
         """Fügt ein neues Ereignis zum Kalender hinzu."""
 
         if not ids:
-            await ctx.send('Bitte folgenden Syntax einhalten: !neuesevent "Beschreibung" "Datum/Uhrzeit" _mit_ Anführungszeichen!')
+            await ctx.send('Bitte folgenden Syntax einhalten: !neuesevent "Beschreibung" Datum Anfang Ende - Beschreibung _mit_ Anführungszeichen! Beispiel siehe: tinyurl.com/scribii')
             return
 
-        if len(ids) != 2:
-            await ctx.send('Bitte folgenden Syntax einhalten: !neuesevent "Beschreibung" "Datum/Uhrzeit" _mit_ Anführungszeichen!')
+        if len(ids) != 4:
+            await ctx.send('Bitte folgenden Syntax einhalten: !neuesevent "Beschreibung" Datum Anfang Ende - Beschreibung _mit_ Anführungszeichen! Beispiel siehe: tinyurl.com/scribii')
             return
+
+        if self.validate(ids[1]) != True:
+            await ctx.send('Datum fehlerhaft! Beispiel siehe: tinyurl.com/scribii')
+            return
+
+        if self.valitime(ids[2]) != True:
+            await ctx.send('Anfangszeit fehlerhaft! Beispiel siehe: tinyurl.com/scribii')
+            return
+
+        if self.valitime(ids[3]) != True:
+            await ctx.send('Endzeit fehlerhaft! Beispiel siehe: tinyurl.com/scribii')
+            return
+
+        eventdate = f"{ids[1]} {ids[2]} {ids[3]}"
 
         try:
             is_already_item = await self.config.guild(ctx.guild).dates.get_raw(ids[0])
@@ -78,7 +92,7 @@ class Kalender(commands.Cog):
                 await self.config.guild(ctx.guild).dates.clear_raw(ids[0])
                 await ctx.send(f"Das Ereignis {ids[0]} existiert schon.")
         except KeyError:
-            await self.config.guild(ctx.guild).dates.set_raw(ids[0], value=ids[1])
+            await self.config.guild(ctx.guild).dates.set_raw(ids[0], value=eventdate)
             await self.kalender(ctx, True)
             await ctx.send(f"Das Ereignis {ids[0]} wurde dem Kalender hinzugefügt.")
 
@@ -143,4 +157,17 @@ class Kalender(commands.Cog):
 
 
   
-   
+    def validate(self, date_text):
+        try:
+            datetime.strptime(date_text, '%d.%m.%y')
+            return True
+        except ValueError:
+            return False
+
+
+    def valitime(self, date_text):
+        try:
+            datetime.strptime(date_text, '%H:%M')
+            return True
+        except ValueError:
+            return False
