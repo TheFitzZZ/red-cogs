@@ -145,7 +145,9 @@ class Kalender(commands.Cog):
         sorted_events = sorted(event_collection, key = lambda x: datetime.strptime(event_collection[x]  ['date'], '%d.%m.%y'))
 
         for event in sorted_events:
-            em.add_field(name=event, value=dates[event], inline=True)
+            list = dates[event].split()
+            textdate = f"{list[0]}\n {list[1]}-{list[2]} Uhr"
+            em.add_field(name=event, value=textdate, inline=True)
         
         em.set_footer(text=f"Für Hilfe zur Nutzung bitte auf die Überschrift klicken.", icon_url=url_link)
         em.set_thumbnail(url=url_calendarlogo)
