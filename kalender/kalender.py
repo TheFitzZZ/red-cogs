@@ -233,6 +233,6 @@ class Kalender(commands.Cog):
                         f"Heute, am {list[0]}, von {list[1]} bis ca. {list[2]} Uhr"
                     )
 
-                    await channeldata.send("*Die Glocke :bell: in der Eingangshalle wird geläutet und der Schreiber erinnert an das für heute angekündigte Ereignis, welches in einem Stundenlauf wohl starten mag...*",embed=em)
+                    await channeldata.send("@here *Die Glocke :bell: in der Eingangshalle wird geläutet und der Schreiber erinnert an das für heute angekündigte Ereignis, welches in einem Stundenlauf wohl starten mag...*",embed=em)
                 
 
