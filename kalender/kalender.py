@@ -226,7 +226,7 @@ class Kalender(commands.Cog):
                 minutes_diff = (d1 - d2).total_seconds() / 60.0
                 #await ctx.send(minutes_diff)
 
-                if minutes_diff == 1:
+                if minutes_diff == 60:
                     em = discord.Embed()
                     em.set_author(name=key, icon_url=url)
                     em.description = (
