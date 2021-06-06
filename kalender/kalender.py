@@ -136,8 +136,16 @@ class Kalender(commands.Cog):
 
         dates = await self.config.guild(ctx.guild).dates()
 
+        event_collection = {}
+
         for key in dates:
-            em.add_field(name=key, value=dates[key], inline=True)
+            list = dates[key].split()
+            event_collection[key] = {'date':list[0],'start':list[1],'end':list[2]}
+        
+        sorted_events = sorted(event_collection, key = lambda x: datetime.strptime(event_collection[x]  ['date'], '%d.%m.%y'))
+
+        for event in sorted_events:
+            em.add_field(name=event, value=dates[event], inline=True)
         
         em.set_footer(text=f"Für Hilfe zur Nutzung bitte auf die Überschrift klicken.", icon_url=url_link)
         em.set_thumbnail(url=url_calendarlogo)
@@ -171,3 +179,41 @@ class Kalender(commands.Cog):
             return True
         except ValueError:
             return False
+
+
+
+    @commands.command()
+    async def sorttest(self, ctx: commands.Context):
+        """This does stuff!"""
+        # Your code will go here
+        await ctx.send("Sorting test...")
+
+        dates = await self.config.guild(ctx.guild).dates()
+
+        # await ctx.send(dates)
+        # for key in dates:
+        #     await ctx.send(f"{key} {dates[key]}")
+        
+        my_collection = {}
+
+        for key in dates:
+            list = dates[key].split()
+            my_collection[key] = {'date':list[0],'start':list[1],'end':list[2]}
+
+        await ctx.send(my_collection)
+        #await ctx.send(my_collection[0])
+
+
+        # my_collection2 = {
+        #     'KEY1':{'name':'foo','data':1351,'completed':100},
+        #     'KEY2':{'name':'bar','data':1541,'completed':12},
+        #     'KEY3':{'name':'baz','data':58413,'completed':18}
+        # }
+
+        # my_collection = {}
+
+        # my_collection = my_collection + {'KEY1':{'name':'foo','data':1351,'completed':100}}
+
+        #sorted_keys = sorted(my_collection, key=lambda x: (my_collection[x]['date']))
+        sorted_keys = sorted(my_collection, key = lambda x: datetime.strptime(my_collection[x]  ['date'], '%d.%m.%y'))
+        await ctx.send(sorted_keys)
