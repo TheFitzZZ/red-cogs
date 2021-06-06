@@ -220,7 +220,6 @@ class Kalender(commands.Cog):
             local_time = now.astimezone(de)
             d2 = datetime(local_time.year, local_time.month, local_time.day, local_time.hour, local_time.minute, 0)
 
-
             istoday = a.date()==b.date()
             if istoday == True:
                 minutes_diff = (d1 - d2).total_seconds() / 60.0
@@ -232,7 +231,7 @@ class Kalender(commands.Cog):
                     em.description = (
                         f"Heute, am {list[0]}, von {list[1]} bis ca. {list[2]} Uhr"
                     )
-
-                    await channeldata.send("@everyone *Die Glocke :bell: in der Eingangshalle wird geläutet und der Schreiber erinnert an das für heute angekündigte Ereignis, welches in einem Stundenlauf wohl starten mag...*",embed=em)
+                    allowed_mentions = discord.AllowedMentions(everyone = True)
+                    await channeldata.send("@everyone *Die Glocke :bell: in der Eingangshalle wird geläutet und der Schreiber erinnert an das für heute angekündigte Ereignis, welches in einem Stundenlauf wohl starten mag...*",embed=em, allowed_mentions = allowed_mentions)
                 
 
