@@ -224,8 +224,9 @@ class Kalender(commands.Cog):
             istoday = a.date()==b.date()
             if istoday == True:
                 minutes_diff = (d1 - d2).total_seconds() / 60.0
+                #await ctx.send(minutes_diff)
 
-                if minutes_diff < 61 and minutes_diff > 0:
+                if minutes_diff == 1:
                     em = discord.Embed()
                     em.set_author(name=key, icon_url=url)
                     em.description = (
