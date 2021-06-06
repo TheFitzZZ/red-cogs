@@ -260,13 +260,23 @@ class Test(commands.Cog):
         await ctx.send(None, embed=em)
     
      
-    @commands.command(name="shit2")
+    @commands.command(name="status")
     async def shit(self, ctx: commands.Context):
         """This posts an example embed"""
         # guild = self.bot.get_guild(payload.guild_id)
         # user = guild.get_member(payload.user_id)
 
-        await ctx.send("This works...")
+        #current_status = ctx.me.status
+        #current_game = str(ctx.me.game)
+        
+        new_game = "test"
+
+        await ctx.send("Changing status...")
+        #await self.bot.change_presence(game=discord.Game(name=new_game), status=current_status)
+        game = discord.Game(
+            name=new_game
+        )
+        await self.bot.change_presence(activity=game)
      
      
      
