@@ -216,10 +216,42 @@ class Test(commands.Cog):
         for idx in ids:
             await ctx.send("Key is "+ idx)
             
+    @commands.command()
+    async def checkdate(self, ctx: commands.Context, *ids: str):
+        """This does stuff!"""
+        # Your code will go here
+        # await ctx.send("Lese Default Dict..."+ ctx.Content)
+
+        if len(ids) != 4:
+            return await ctx.send_help()
+
+        await ctx.send(len(ids))
+
+        for idx in ids:
+            await ctx.send("Key is "+ idx)
+
+        self.validate(ids[1])
+        self.valitime(ids[2])   
+            
 
 
 
+    def validate(self, date_text):
+        try:
+            datetime.strptime(date_text, '%d.%m.%y')
+            return True
+        except ValueError:
+            # raise ValueError("Incorrect data format, should be DD.MM.YY")
+            return False
 
+
+    def valitime(self, date_text):
+        try:
+            datetime.strptime(date_text, '%H:%M')
+            return True
+        except ValueError:
+            #raise ValueError("Incorrect time format, should be 23:45")
+            return False
 
 
 
