@@ -4,6 +4,8 @@ import requests
 import json
 import datetime
 import discord
+from pytz import timezone
+import pytz
 from datetime import datetime, timedelta
 
 class Kalender(commands.Cog):
@@ -196,3 +198,40 @@ class Kalender(commands.Cog):
             if isold == True:
                 await self.config.guild(ctx.guild).dates.clear_raw(key)
                 await self.kalender(ctx, True)
+    
+    @commands.command()
+    async def calnotify(self, ctx: commands.Context):
+        dates = await self.config.guild(ctx.guild).dates()
+        channel = await ctx.bot.get_shared_api_tokens("calnotichannelid")
+        channeldata = self.bot.get_channel(int(channel['calnotichannelid']))
+        url = "https://konvent.fitzzz.de/uploads/images/system/2021-04/wappen-transparent.png"
+
+
+        for key in dates:
+            list = dates[key].split()
+            a = datetime.strptime(list[0], '%d.%m.%y')
+            c = datetime.strptime(list[1], '%H:%M')
+            b = datetime.utcnow()
+            d1 = datetime(a.year, a.month, a.day, c.hour, c.minute, 0) 
+
+            utc = pytz.timezone('UTC')
+            now = utc.localize(datetime.utcnow())
+            de = pytz.timezone('Europe/Berlin')
+            local_time = now.astimezone(de)
+            d2 = datetime(local_time.year, local_time.month, local_time.day, local_time.hour, local_time.minute, 0)
+
+
+            istoday = a.date()==b.date()
+            if istoday == True:
+                minutes_diff = (d1 - d2).total_seconds() / 60.0
+
+                if minutes_diff < 61 and minutes_diff > 0:
+                    em = discord.Embed()
+                    em.set_author(name=key, icon_url=url)
+                    em.description = (
+                        f"Heute, am {list[0]}, von {list[1]} bis ca. {list[2]} Uhr"
+                    )
+
+                    await channeldata.send("*Die Glocke :bell: in der Eingangshalle wird geläutet und der Schreiber erinnert an das für heute angekündigte Ereignis, welches in einem Stundenlauf wohl starten mag...*",embed=em)
+                
+
