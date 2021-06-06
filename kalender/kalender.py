@@ -115,7 +115,7 @@ class Kalender(commands.Cog):
         url = ctx.message.author.avatar_url
         url = "https://konvent.fitzzz.de/uploads/images/system/2021-04/wappen-transparent.png"
         url_link = "https://cdn.discordapp.com/emojis/595164813982826497.png?v=1"
-        url_calendarlogo = "https://cdn4.iconfinder.com/data/icons/small-n-flat/24/calendar-512.png"
+        url_calendarlogo = "https://konvent.fitzzz.de/uploads/images/gallery/2021-06/scaled-1680-/kalender.png"
 
         em = discord.Embed(title="Aktueller Terminplan des Konvents", url="https://konvent.fitzzz.de/books/der-gildenkalender/page/nutzung-unseres-schreibers-scrib")
         em.set_author(name=f"*Ein Kalender ist in der Eingangshalle aufgehängt*", icon_url=url)
