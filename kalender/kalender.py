@@ -237,3 +237,6 @@ class Kalender(commands.Cog):
                     await channeldata.send("@everyone *Die Glocke :bell: in der Eingangshalle wird geläutet und der Schreiber erinnert an das für heute angekündigte Ereignis, welches in einem Stundenlauf wohl starten mag...*",embed=em, allowed_mentions = allowed_mentions)
                 
 
+    @commands.command()
+    async def calupdate(self, ctx: commands.Context):
+        await self.kalender(ctx, True)
