@@ -134,7 +134,6 @@ class Kalender(commands.Cog):
         url_calendarlogo = "https://konvent.fitzzz.de/uploads/images/gallery/2021-06/scaled-1680-/kalender.png"
 
         em = discord.Embed(title="Aktueller Terminplan des Konvents", url="https://konvent.fitzzz.de/books/der-gildenkalender/page/nutzung-unseres-schreibers-scrib")
-        em.set_author(name=f"*Ein Kalender wird vom Schreiber Scrib in der Eingangshalle des Anwesens aufgehängt*", icon_url=url)
 
         dates = await self.config.guild(ctx.guild).dates()
 
@@ -145,6 +144,9 @@ class Kalender(commands.Cog):
             event_collection[key] = {'date':list[0],'start':list[1],'end':list[2]}
         
         sorted_events = sorted(event_collection, key = lambda x: datetime.strptime(event_collection[x]  ['date'], '%d.%m.%y'))
+
+        em.set_author(name=f"Nächstes Ereignis: {sorted_events[0]}", icon_url=url)
+
 
         for event in sorted_events:
             list = dates[event].split()
