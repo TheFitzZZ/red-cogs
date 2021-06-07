@@ -134,7 +134,7 @@ class Kalender(commands.Cog):
         url_calendarlogo = "https://konvent.fitzzz.de/uploads/images/gallery/2021-06/scaled-1680-/kalender.png"
 
         em = discord.Embed(title="Aktueller Terminplan des Konvents", url="https://konvent.fitzzz.de/books/der-gildenkalender/page/nutzung-unseres-schreibers-scrib")
-        em.set_author(name=f"*Ein Kalender ist in der Eingangshalle aufgehängt*", icon_url=url)
+        em.set_author(name=f"*Ein Kalender wird vom Schreiber Scrib in der Eingangshalle des Anwesens aufgehängt*", icon_url=url)
 
         dates = await self.config.guild(ctx.guild).dates()
 
@@ -159,13 +159,13 @@ class Kalender(commands.Cog):
 
 
         if update != True:
-            calmsg = await channeldata.send(None, embed=em)
+            calmsg = await channeldata.send(content="*Ein Kalender wird vom Schreiber Scrib in der Eingangshalle des Anwesens aufgehängt*", embed=em)
             await self.config.guild(ctx.guild).calendarmsgid.set(calmsg.id)
         
         if update == True:
             msgid = await self.config.guild(ctx.guild).calendarmsgid()
             msg = await channeldata.fetch_message(msgid)
-            await msg.edit(content=None, embed=em)
+            await msg.edit(content="*Ein Kalender wird vom Schreiber Scrib in der Eingangshalle des Anwesens aufgehängt*", embed=em)
 
 
   
