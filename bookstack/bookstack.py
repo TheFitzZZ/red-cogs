@@ -173,7 +173,7 @@ class Bookstack(commands.Cog):
         def is_recent(strtimestamp):
             # Get current datetime
             start = datetime.now()
-            end   = datetime.strptime(strtimestamp, '%Y-%m-%d %H:%M:%S')
+            end   = datetime.fromisoformat(strtimestamp[:-1]) #datetime.strptime(strtimestamp, '%Y-%m-%d %H:%M:%S')
             delta = start-end
 
             # Dumb workaround that if you read it it will make you sick
