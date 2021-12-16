@@ -145,7 +145,11 @@ class Kalender(commands.Cog):
         
         sorted_events = sorted(event_collection, key = lambda x: datetime.strptime(event_collection[x]  ['date'], '%d.%m.%y'))
 
-        em.set_author(name=f"Nächstes Ereignis: {sorted_events[0]}", icon_url=url)
+        print(len(sorted_events))
+        if len(sorted_events) > 1:
+            em.set_author(name=f"Nächstes Ereignis: {sorted_events[0]}", icon_url=url)
+        else:
+            em.set_author(name=f"Keine geplanten Ereignisse...", icon_url=url)
 
 
         for event in sorted_events:
