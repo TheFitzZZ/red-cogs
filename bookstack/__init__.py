@@ -1,5 +1,5 @@
 from .bookstack import Bookstack
 
 
-def setup(bot):
-    bot.add_cog(Bookstack())
+async def setup(bot):
+    await bot.add_cog(Bookstack())

@@ -1,5 +1,5 @@
 from .kalender import Kalender
 
 
-def setup(bot):
-    bot.add_cog(Kalender(bot))
+async def setup(bot):
+    await bot.add_cog(Kalender(bot))
